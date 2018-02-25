@@ -12,9 +12,9 @@ const commands = {
 	createPerson: payload => {
 		payload.pets = [];
 		db.push(payload);
-		return 'person created';
+		return { queryresult: 'person created' };
 	},
-	getPetsByOwner: ({ owner }) => db.filter(doc => doc.name === owner).map(doc => doc.pets)[0]
+	getPetIdsByOwner: ({ owner }) => db.filter(doc => doc.name === owner).map(doc => doc.pets)[0]
 };
 
 people
@@ -25,10 +25,7 @@ people
     	.on('close', () => console.log('people socket closed'))
 			.on('data', chunk => {
 				const payload = JSON.parse(chunk);
-				socket.write(JSON.stringify({
-					result: commands[payload.cmd](payload.payload)
-				}));
-
+				socket.write(JSON.stringify(commands[payload.cmd](payload.payload)));
 			});
 	})
 	.on('close', () => console.log('people server closed'))

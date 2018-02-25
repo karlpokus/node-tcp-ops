@@ -20,9 +20,7 @@ pets
     	.on('close', () => console.log('pet socket closed'))
 			.on('data', chunk => {
 				const payload = JSON.parse(chunk);
-				socket.write(JSON.stringify({
-					result: commands[payload.cmd](payload.payload)
-				}));
+				socket.write(JSON.stringify(commands[payload.cmd](payload.payload)));
 			});
 	})
 	.on('close', () => console.log('people closed'))
