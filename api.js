@@ -3,6 +3,7 @@ const net = require('net');
 
 const srv = http.createServer();
 const router = require('./lib/router');
+const query = require('./lib/query');
 
 let people; // socket
 let pets;
@@ -21,26 +22,31 @@ const connectToPets = () => {
 		.on('end', () => console.log('pets socket ended'));
 };
 
-function runQuery(service, cmd, payload, done) {
-	service.write(JSON.stringify({ cmd, payload }));
-	service.once('data', done);
+const connectToServices = () => {
+	connectToPeople();
+	connectToPets();
 }
 
+const errHandler = (err) => console.error(err);
+
 router.add('GET', '/people', (req, res, data) => {
-	runQuery(people, 'getAllPeople', null, res.end.bind(res));
+	query(people, 'getAllPeople', null)
+		.then(people => res.end(people))
+		.catch(errHandler);
 });
 
 router.add('POST', '/people', (req, res, data) => {
-	runQuery(people, 'createPerson', data, res.end.bind(res));
+	query(people, 'createPerson', data)
+		.then(result => res.end(result))
+		.catch(errHandler);
 });
 
 router.add('GET', '/people/pets', (req, res, data) => {
-	runQuery(people, 'getPetsByOwner', data, result => {
-		runQuery(pets, 'getPetsByIds', JSON.parse(result).result, res.end.bind(res))
-	});
+	query(people, 'getPetIdsByOwner', data)
+		.then(petIds => query(pets, 'getPetsByIds', JSON.parse(petIds)))
+		.then(petList => res.end(petList))
+		.catch(errHandler);
 });
 
-srv.on('request', router.go.bind(router)).listen(5001, () => {
-	connectToPeople();
-	connectToPets();
-});
+srv.on('request', router.go.bind(router))
+	.listen(5001, connectToServices);

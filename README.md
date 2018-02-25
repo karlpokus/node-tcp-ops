@@ -27,7 +27,7 @@ GET /people/pets?owner=<string> # returns pets by owner
 - [x] persistant connections between api and services
 - [ ] auto-reconnect on reload
 - [ ] make people own pets
-- [ ] add server response status in service socket write
 - [ ] use persistant db
-- [ ] make a router
+- [x] make a router
+- [ ] proper error handling
 - [x] figure out how to make `req.pipe(people, { end:false }).pipe(res)` work without ending the people stream
