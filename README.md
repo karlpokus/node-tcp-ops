@@ -21,6 +21,8 @@ GET /people/pets?owner=<string> # returns pets by owner
 ```
 
 # todos
+- [x] api polling for connection
+- [ ] api retry connecting when service socket end
 - [x] run w PM2
 - [ ] use cluster
 - [ ] cluster always keep n workers
