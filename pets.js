@@ -1,41 +1,30 @@
-/*
 const net = require('net'),
       pets = net.createServer(),
       PORT = 5003,
-      HOST = 'localhost';
-			db = ['bixa', 'rex'];
+      HOST = 'localhost',
+			db = [
+				{ id:1, name:'bixa' },
+				{ id:2, name:'kitty' },
+				{ id:3, name:'rex' }
+			];
 
-const actions = {
-	getAll: () => db,
-	create: x => {
-		db.push(x.name);
-		return { result: `${ x.name } created`}
-	}
+const commands = {
+	getPetsByIds: ids => db.filter(doc => ids.indexOf(doc.id) > -1).map(doc => doc.name)
 };
-
-function onClose(data) {
-	console.log('socket closed');
-}
 
 pets
 	.on('connection', function(socket){
 		console.log('api connected to pets');
 
     socket
-    	.on('close', onClose)
+    	.on('close', () => console.log('pet socket closed'))
 			.on('data', chunk => {
 				const payload = JSON.parse(chunk);
 				socket.write(JSON.stringify({
-					data: actions[payload.action](payload.payload),
-					id: payload.id
+					result: commands[payload.cmd](payload.payload)
 				}));
 			});
 	})
 	.on('close', () => console.log('people closed'))
-	.on('error', function(err){
-		console.error(err);
-	})
-	.listen(PORT, HOST, function(){
-		console.log('pets running on', PORT);
-	});
-*/
+	.on('error', (err) => console.error(err))
+	.listen(PORT, HOST, () => console.log('pets running on', PORT));

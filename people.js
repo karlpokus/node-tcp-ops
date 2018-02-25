@@ -2,14 +2,19 @@ const net = require('net'),
       people = net.createServer(),
       PORT = 5002,
       HOST = 'localhost';
-			db = ['bob', 'jane'];
+			db = [
+				{ name: 'bob', pets: [1, 3] },
+				{ name: 'jane', pets: [] }
+			];
 
 const commands = {
-	getAll: () => db,
-	create: x => {
-		db.push(x.name);
-		return { result: `${ x.name } created`}
-	}
+	getAllPeople: () => db.map(doc => doc.name),
+	createPerson: payload => {
+		payload.pets = [];
+		db.push(payload);
+		return 'person created';
+	},
+	getPetsByOwner: ({ owner }) => db.filter(doc => doc.name === owner).map(doc => doc.pets)[0]
 };
 
 people
@@ -21,7 +26,7 @@ people
 			.on('data', chunk => {
 				const payload = JSON.parse(chunk);
 				socket.write(JSON.stringify({
-					data: commands[payload.cmd](payload.payload)
+					result: commands[payload.cmd](payload.payload)
 				}));
 
 			});

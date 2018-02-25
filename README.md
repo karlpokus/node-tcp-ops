@@ -3,7 +3,7 @@ A proposal for a resilient, highly available and scalable service architecture.
 
 # requirements
 - [ ] scalable on the fly
-- [ ] no inter-service dependencies
+- [x] no inter-service dependencies
 - [ ] no dependency on startup order
 
 # implementation
@@ -14,9 +14,10 @@ Clients calls an api via http, the api calls service x via tcp and relays data b
 ```bash
 # start
 $ npm run start
-# people
-GET /people # returns all
-POST /people?name=<string> # creates new person
+# services
+GET /people # returns people
+POST /people?name=<string> # creates person
+GET /people/pets?owner=<string> # returns pets by owner
 ```
 
 # todos
@@ -26,6 +27,7 @@ POST /people?name=<string> # creates new person
 - [x] persistant connections between api and services
 - [ ] auto-reconnect on reload
 - [ ] make people own pets
+- [ ] add server response status in service socket write
 - [ ] use persistant db
 - [ ] make a router
 - [x] figure out how to make `req.pipe(people, { end:false }).pipe(res)` work without ending the people stream
