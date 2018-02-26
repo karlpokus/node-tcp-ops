@@ -2,7 +2,7 @@
 A proposal for a fast, resilient and scalable service architecture. No dependencies.
 
 # requirements
-- [ ] scalable on the fly
+- [x] scalable on the fly
 - [x] no inter-service dependencies
 - [x] no dependency on startup order
 - [x] automagic reconnection
