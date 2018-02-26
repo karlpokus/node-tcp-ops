@@ -9,6 +9,7 @@ const net = require('net'),
 			];
 
 const commands = {
+	status: () => ({ pets: 'ok' }),
 	getPetsByIds: ids => db.filter(doc => ids.indexOf(doc.id) > -1).map(doc => doc.name)
 };
 

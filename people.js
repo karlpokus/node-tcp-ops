@@ -8,6 +8,7 @@ const net = require('net'),
 			];
 
 const commands = {
+	status: () => ({ people: 'ok' }),
 	getAllPeople: () => db.map(doc => doc.name),
 	createPerson: payload => {
 		payload.pets = [];

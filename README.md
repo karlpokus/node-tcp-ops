@@ -24,6 +24,8 @@ GET /people/pets?owner=<string> # returns pets by owner
 - [x] api polling for connection
 - [ ] api retry connecting when service socket end
 - [x] run w PM2
+- [x] service status end point
+- [ ] connect to services in parallell
 - [ ] use cluster
 - [ ] cluster always keep n workers
 - [x] persistant connections between api and services

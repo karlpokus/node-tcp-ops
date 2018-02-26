@@ -34,5 +34,14 @@ router.add('GET', '/people/pets', (req, res, data) => {
 		.catch(errHandler);
 });
 
+router.add('GET', '/status', (req, res, data) => {
+	const statusPayloads = Object.keys(services)
+		.map(service => query(services[service], 'status', null))
+
+	Promise.all(statusPayloads)
+		.then(stats => res.end(stats.toString()))
+		.catch(errHandler);
+});
+
 srv.on('request', router.go.bind(router))
 	.listen(5001, connectToServices);
