@@ -18,12 +18,17 @@ $ npm run start
 GET /people # returns people
 POST /people?name=<string> # creates person
 GET /people/pets?owner=<string> # returns pets by owner
+# check
+GET /status # checks sockets
 ```
 
 # todos
 - [x] api polling for connection
+- [x] new service abstraction
+- [ ] service exit and api reconnect on socket end
 - [ ] api retry connecting when service socket end
 - [x] run w PM2
+- [ ] use `--max-memory-restart <mem>`
 - [x] service status end point
 - [ ] connect to services in parallell
 - [ ] use cluster

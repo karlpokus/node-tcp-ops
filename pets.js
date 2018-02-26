@@ -1,29 +1,21 @@
-const net = require('net'),
-      pets = net.createServer(),
-      PORT = 5003,
-      HOST = 'localhost',
-			db = [
-				{ id:1, name:'bixa' },
-				{ id:2, name:'kitty' },
-				{ id:3, name:'rex' }
-			];
+const Service = require('./lib/service');
 
-const commands = {
-	status: () => ({ pets: 'ok' }),
-	getPetsByIds: ids => db.filter(doc => ids.indexOf(doc.id) > -1).map(doc => doc.name)
-};
+const db = [
+	{ id:1, name:'bixa' },
+	{ id:2, name:'kitty' },
+	{ id:3, name:'rex' }
+];
 
-pets
-	.on('connection', function(socket){
-		console.log('api connected to pets');
+const pets = new Service({
+	name: 'pets',
+	port: 5003,
+	host: 'localhost',
+	commands: {
+		status: () => ({ pets: 'ok' }),
+		getPetsByIds: ids => db.filter(doc => ids.indexOf(doc.id) > -1).map(doc => doc.name)
+	}
+});
 
-    socket
-    	.on('close', () => console.log('pet socket closed'))
-			.on('data', chunk => {
-				const payload = JSON.parse(chunk);
-				socket.write(JSON.stringify(commands[payload.cmd](payload.payload)));
-			});
-	})
-	.on('close', () => console.log('people closed'))
-	.on('error', (err) => console.error(err))
-	.listen(PORT, HOST, () => console.log('pets running on', PORT));
+pets.start()
+	.then(socket => {})
+	.catch(console.error.bind(console));
