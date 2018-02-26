@@ -9,8 +9,14 @@ const connectToService = require('./lib/connect');
 let services = {};
 
 const connectToServices = () => {
-	connectToService(services, 'people', 5002, 0);
-	connectToService(services, 'pets', 5003, 0);
+	Promise.all([
+		connectToService(services, 'people', 5002),
+		connectToService(services, 'pets', 5003)
+	]).then(() => console.log('api connected to all services'))
+	.catch(() => {
+		console.error(`unable to connect to all services. exiting now`);
+		process.exit(1);
+	});
 }
 
 const errHandler = (err) => console.error(err);
