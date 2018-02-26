@@ -1,6 +1,7 @@
 const procs = [
+	'api',
 	'people',
-	'api'
+	'pets'
 ];
 
 const singleConfig = proc => ({
