@@ -10,14 +10,19 @@ const people = new Service({
 	port: 5002,
 	host: 'localhost',
 	commands: {
-		status: () => ({ people: 'ok' }),
-		getAllPeople: () => db.map(doc => doc.name),
+		status: () => Promise.resolve({ people: 'ok' }),
+		getAllPeople: () => Promise.resolve(db.map(doc => doc.name)),
 		createPerson: payload => {
 			payload.pets = [];
 			db.push(payload);
-			return { queryresult: 'person created' };
+			return Promise.resolve('person created');
 		},
-		getPetIdsByOwner: ({ owner }) => db.filter(doc => doc.name === owner).map(doc => doc.pets)[0]
+		getPetIdsByOwner: ({ owner }) => {
+			if (!owner) {
+				return Promise.reject('owner missing from args');
+			}
+			return Promise.resolve(db.filter(doc => doc.name === owner)[0].pets);
+		}
 	}
 });
 

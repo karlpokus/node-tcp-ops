@@ -11,8 +11,13 @@ const pets = new Service({
 	port: 5003,
 	host: 'localhost',
 	commands: {
-		status: () => ({ pets: 'ok' }),
-		getPetsByIds: ids => db.filter(doc => ids.indexOf(doc.id) > -1).map(doc => doc.name)
+		status: () => Promise.resolve({ pets: 'ok' }),
+		getPetsByIds: ids => {
+			if (!ids || !ids.length) {
+				return Promise.reject('no pets found');
+			}
+			return Promise.resolve(db.filter(doc => ids.indexOf(doc.id) > -1).map(doc => doc.name));
+		}
 	}
 });
 
