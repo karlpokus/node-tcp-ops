@@ -19,25 +19,29 @@ const connectToServices = () => {
 	});
 }
 
-const errHandler = (err) => console.error(err);
+const errHandler = (res, err) => {
+	console.error(err);
+	res.writeHead(500);
+	res.end(err.msg || 'error: 500');
+};
 
 router.add('GET', '/people', (req, res, data) => {
 	query(services.people, 'getAllPeople', null)
 		.then(people => res.end(people))
-		.catch(errHandler);
+		.catch(errHandler.bind(null, res));
 });
 
 router.add('POST', '/people', (req, res, data) => {
 	query(services.people, 'createPerson', data)
 		.then(result => res.end(result))
-		.catch(errHandler);
+		.catch(errHandler.bind(null, res));
 });
 
 router.add('GET', '/people/pets', (req, res, data) => {
 	query(services.people, 'getPetIdsByOwner', data)
 		.then(petIds => query(services.pets, 'getPetsByIds', JSON.parse(petIds)))
 		.then(petList => res.end(petList))
-		.catch(errHandler);
+		.catch(errHandler.bind(null, res));
 });
 
 router.add('GET', '/status', (req, res, data) => {
@@ -46,7 +50,7 @@ router.add('GET', '/status', (req, res, data) => {
 
 	Promise.all(statusPayloads)
 		.then(stats => res.end(stats.toString()))
-		.catch(errHandler);
+		.catch(errHandler.bind(null, res));
 });
 
 srv.on('request', router.go.bind(router))
