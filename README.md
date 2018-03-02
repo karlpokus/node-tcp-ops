@@ -27,6 +27,7 @@ GET /people # returns people
 POST /people?name=<string> # creates person
 GET /people/pets?owner=<string> # returns pets by owner
 GET /status # check status for all services
+GET /hash?str=<string> # get md5 for supplied string from remote api
 ```
 connect directly to service
 ```bash
@@ -48,6 +49,13 @@ $ nc localhost 5002
 # todos
 - [ ] do tests
 - [ ] validate inputs
+- [ ] compare bufferSize to payload before write
+- [x] add remote api service
+- [ ] add timeout to remote api calls
+- [ ] add basic auth
+- [ ] add websockets
+- [ ] use TLS
+- [ ] deploy somewhere, monitor (w appmetrics or keymetrics) and run load-cron
 - [x] try nc interactive mode
 - [x] use PM2 `watch` for dev
 - [ ] add handler for service server `error`, `close`
@@ -57,7 +65,7 @@ $ nc localhost 5002
 - [ ] catch `uncaughtException`, print error and exit?
 - [x] run w PM2
 - [ ] add middleware to router
-- [ ] use `--max-memory-restart <mem>`
+- [ ] use `--max-memory-restart` and `--max-restarts`
 - [x] service status end point
 - [x] connect to services in parallell
 - [x] use cluster
@@ -67,5 +75,5 @@ $ nc localhost 5002
 - [x] make people own pets
 - [ ] use persistant db
 - [x] make a router
-- [ ] proper error handling
+- [x] proper error handling
 - [x] figure out how to make `req.pipe(people, { end:false }).pipe(res)` work without ending the people stream
