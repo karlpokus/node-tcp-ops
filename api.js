@@ -4,25 +4,29 @@ const srv = http.createServer();
 const router = require('./lib/router');
 const query = require('./lib/query');
 const connectToService = require('./lib/connect');
+const availableServices = [
+	{ name: 'people', port: 5002},
+	{ name: 'pets', port: 5003},
+	{ name: 'remote', port: 5004}
+];
 
-// sockets
-let services = {};
+let services = {}; // sockets
 
 const connectToServices = () => {
-	Promise.all([
-		connectToService(services, 'people', 5002),
-		connectToService(services, 'pets', 5003)
-	]).then(() => console.log('api connected to all services'))
-	.catch(() => {
-		console.error(`unable to connect to all services. exiting now`);
-		process.exit(1);
-	});
+	const payload = availableServices.map(service => connectToService(services, service.name, service.port));
+
+	Promise.all(payload)
+		.then(() => console.log('api connected to all services'))
+		.catch(() => {
+			console.error(`unable to connect to all services. exiting now`);
+			process.exit(1);
+		});
 }
 
 const errHandler = (res, err) => {
 	console.error(err);
 	res.writeHead(500);
-	res.end(err.msg || 'error: 500');
+	res.end();
 };
 
 router.add('GET', '/people', (req, res, data) => {
@@ -39,7 +43,7 @@ router.add('POST', '/people', (req, res, data) => {
 
 router.add('GET', '/people/pets', (req, res, data) => {
 	query(services.people, 'getPetIdsByOwner', data)
-		.then(petIds => query(services.pets, 'getPetsByIds', JSON.parse(petIds)))
+		.then(petIds => query(services.pets, 'getPetsByIds', JSON.parse(petIds).res))
 		.then(petList => res.end(petList))
 		.catch(errHandler.bind(null, res));
 });
@@ -50,6 +54,12 @@ router.add('GET', '/status', (req, res, data) => {
 
 	Promise.all(statusPayloads)
 		.then(stats => res.end(stats.toString()))
+		.catch(errHandler.bind(null, res));
+});
+
+router.add('GET', '/hash', (req, res, data) => {
+	query(services.remote, 'getHash', data)
+		.then(hash => res.end(hash))
 		.catch(errHandler.bind(null, res));
 });
 
