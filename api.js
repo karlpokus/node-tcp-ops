@@ -13,7 +13,7 @@ const availableServices = [
 let services = {}; // sockets
 
 const connectToServices = () => {
-	const payload = availableServices.map(service => connectToService(services, service.name, service.port));
+	const payload = availableServices.map(service => connectToService(services, service));
 
 	Promise.all(payload)
 		.then(() => console.log('api connected to all services'))
@@ -53,7 +53,7 @@ router.add('GET', '/status', (req, res, data) => {
 		.map(service => query(services[service], 'status', null))
 
 	Promise.all(statusPayloads)
-		.then(stats => res.end(stats.toString()))
+		.then(stats => res.end(JSON.stringify(stats.map(stat => JSON.parse(stat.toString()).res))))
 		.catch(errHandler.bind(null, res));
 });
 
