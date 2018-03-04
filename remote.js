@@ -3,22 +3,15 @@ const http = require('http');
 
 const remoteCall = url => {
 	return new Promise((resolve, reject) => {
-		const req = http.request(url);
-		let data = '';
 
-		req
+		http.request(url)
 			.on('error', reject)
 			.on('response', res => {
-				res
-					.on('data', chunk => {
-						data += chunk;
-					})
-					.on('end', () => {
-						resolve(JSON.parse(data).md5);
-					});
-			});
-
-		req.end();
+				res.on('data', chunk => {
+					resolve(JSON.parse(chunk.toString()).md5);
+				});
+			})
+			.end();
 	});
 }
 
