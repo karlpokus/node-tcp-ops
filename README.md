@@ -63,7 +63,7 @@ $ npm test
 - [ ] catch `uncaughtException`, print error and exit?
 - [x] run w PM2
 - [ ] add middleware to router
-- [ ] use `--max-memory-restart` and `--max-restarts`
+- [x] use `--max-memory-restart` and `--max-restarts`
 - [x] service status end point
 - [x] connect to services in parallell
 - [x] use cluster
