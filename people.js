@@ -10,7 +10,7 @@ const people = new Service({
 	port: 5002,
 	host: 'localhost',
 	commands: {
-		status: () => Promise.resolve({ people: 'ok' }),
+		status: () => Promise.resolve({ service: 'people', status: 'ok' }),
 		getAllPeople: () => Promise.resolve(db.map(doc => doc.name)),
 		createPerson: payload => {
 			payload.pets = [];

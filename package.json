@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-		"start": "pm2 start pm2.config.js"
+    "test": "tape test.js",
+    "start": "pm2 start pm2.config.js",
+		"stop": "pm2 delete all"
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/karlpokus/node-tcp-ops/issues"
   },
-  "homepage": "https://github.com/karlpokus/node-tcp-ops#readme"
+  "homepage": "https://github.com/karlpokus/node-tcp-ops#readme",
+  "dependencies": {
+    "tape": "^4.9.0"
+  }
 }

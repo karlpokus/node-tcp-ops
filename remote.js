@@ -20,7 +20,7 @@ const remote = new Service({
 	port: 5004,
 	host: 'localhost',
 	commands: {
-		status: () => Promise.resolve({ remote: 'ok' }),
+		status: () => Promise.resolve({ service: 'remote', status: 'ok' }),
 		getHash: ({ str }) => remoteCall(`http://md5.jsontest.com/?text=${ str }`)
 	}
 });

@@ -32,22 +32,20 @@ GET /hash?str=<string> # get md5 for supplied string from remote api
 connect directly to service
 ```bash
 # one shot
-$ echo -ne '{"cmd":"status"}' | nc localhost 5002
+$ echo -ne '{"cmd":"status"}' | nc <host> <port>
 # or interactive mode
-$ nc localhost 5002
+$ nc <host> <port>
 > {"cmd":"status"}
 ```
 
-# tests (todo)
-- start everything and expect client to connect to all services
-- start client and some services and expect client to fail forever
-- start services first, then client and expect client to connect to all services
-- have client running and restart services and client should reconnect
-- services should handle malformed payloads
-- remove service x worker y in cluster mode and expect client to be ok
+# tests
+```bash
+$ npm test
+```
 
 # todos
-- [ ] do tests
+- [x] do tests
+- [ ] remove watcher from tests
 - [ ] validate inputs
 - [ ] compare bufferSize to payload before write
 - [x] add remote api service

@@ -11,7 +11,7 @@ const pets = new Service({
 	port: 5003,
 	host: 'localhost',
 	commands: {
-		status: () => Promise.resolve({ pets: 'ok' }),
+		status: () => Promise.resolve({ service: 'pets', status: 'ok' }),
 		getPetsByIds: ids => {
 			if (!ids || !ids.length) {
 				return Promise.reject('no pets found');
