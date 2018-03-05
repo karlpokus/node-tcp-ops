@@ -29,6 +29,10 @@ GET /people/pets?owner=<string> # returns pets by owner
 GET /status # check status for all services
 GET /hash?str=<string> # get md5 for supplied string from remote api
 ```
+scale on the fly
+```bash
+$ pm2 scale <app> <procs>
+```
 connect directly to service
 ```bash
 # one shot
@@ -48,6 +52,7 @@ $ npm test
 - [ ] remove watcher from tests
 - [ ] validate inputs
 - [ ] compare bufferSize to payload before write
+- [ ] log worker id
 - [x] add remote api service
 - [ ] add timeout to remote api calls
 - [ ] add basic auth

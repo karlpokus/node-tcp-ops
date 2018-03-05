@@ -12,8 +12,8 @@ const singleConfig = proc => ({
 	log_date_format: 'YYYY-MM-DD HH:mm Z',
 	max_memory_restart: '500M',
 	max_restarts: 10,
-	//instances: 2,
-	//exec_mode: 'cluster'
+	instances: 1,
+	exec_mode: 'cluster'
 });
 
 module.exports = {
