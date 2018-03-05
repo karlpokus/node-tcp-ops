@@ -13,9 +13,9 @@ const availableServices = [
 let services = {}; // sockets
 
 const connectToServices = () => {
-	const payload = availableServices.map(service => connectToService(services, service));
+	console.log('api http ready');
 
-	Promise.all(payload)
+	Promise.all(availableServices.map(service => connectToService(services, service)))
 		.then(() => console.log('api connected to all services'))
 		.catch(() => {
 			console.error(`unable to connect to all services. exiting now`);
