@@ -27,11 +27,15 @@ GET /people # returns people
 POST /people?name=<string> # creates person
 GET /people/pets?owner=<string> # returns pets by owner
 GET /status # check status for all services
-GET /hash?str=<string> # get md5 for supplied string from remote api
+GET /hash?text=<string> # get md5 for supplied string from remote api
 ```
 scale on the fly
 ```bash
-$ pm2 scale <app> <procs>
+$ pm2 scale <app> <n>
+```
+make remote service use proxy
+```bash
+$ HTTP_PROXY=http://<host>:<port> pm2 restart remote --update-env
 ```
 connect directly to service
 ```bash
@@ -58,7 +62,10 @@ $ npm test
 - [ ] add basic auth
 - [ ] add websockets
 - [ ] use TLS
-- [ ] deploy somewhere, monitor (w appmetrics or keymetrics) and run load-cron
+- [ ] deploy somewhere, monitor (w appmetrics or pmx) and run load-cron
+- [x] add support for `HTTP_PROXY`
+- [ ] add message queue for disconnects/restarts like [axon](https://github.com/tj/axon#pubemitter--subemitter)
+- [ ] try [send msg to process](http://pm2.keymetrics.io/docs/usage/pm2-api/#send-message-to-process) or use [trigger](http://pm2.keymetrics.io/docs/usage/process-actions/)
 - [x] try nc interactive mode
 - [x] use PM2 `watch` for dev
 - [ ] add handler for service server `error`, `close`

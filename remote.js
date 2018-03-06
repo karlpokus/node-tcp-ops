@@ -1,10 +1,22 @@
 const Service = require('./lib/service');
 const http = require('http');
+const url = require('url');
 
-const remoteCall = url => {
+const request = dest => {
 	return new Promise((resolve, reject) => {
+		const proxy = process.env.HTTP_PROXY;
+		let opts;
 
-		http.request(url)
+		if (proxy) {
+			const { hostname, port } = url.parse(proxy);
+			opts = { hostname, port, path: dest };
+
+		} else {
+			const { host, search } = url.parse(dest);
+			opts = { host, path: `/${ search }`}
+		}
+
+		http.request(opts)
 			.on('error', reject)
 			.on('response', res => {
 				res.on('data', chunk => {
@@ -21,7 +33,7 @@ const remote = new Service({
 	host: 'localhost',
 	commands: {
 		status: () => Promise.resolve({ service: 'remote', status: 'ok' }),
-		getHash: ({ str }) => remoteCall(`http://md5.jsontest.com/?text=${ str }`)
+		getHash: ({ text }) => request(`http://md5.jsontest.com/?text=${ text }`)
 	}
 });
 
