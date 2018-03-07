@@ -3,6 +3,7 @@ const http = require('http');
 const srv = http.createServer();
 const router = require('./lib/router');
 const query = require('./lib/query');
+const log = require('./lib/log');
 const connectToService = require('./lib/connect');
 const availableServices = [
 	{ name: 'people', port: 5002},
@@ -13,18 +14,18 @@ const availableServices = [
 let services = {}; // sockets
 
 const connectToServices = () => {
-	console.log('api http ready');
+	log('http ready');
 
 	Promise.all(availableServices.map(service => connectToService(services, service)))
-		.then(() => console.log('api connected to all services'))
+		.then(() => log('connected to all services'))
 		.catch(() => {
-			console.error(`unable to connect to all services. exiting now`);
+			log('error', 'unable to connect to all services. exiting now');
 			process.exit(1);
 		});
 }
 
 const errHandler = (res, err) => {
-	console.error(err);
+	log('error', err);
 	res.writeHead(500);
 	res.end();
 };

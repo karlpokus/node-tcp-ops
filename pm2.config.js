@@ -13,7 +13,8 @@ const singleConfig = proc => ({
 	max_memory_restart: '500M',
 	max_restarts: 10,
 	instances: 1,
-	exec_mode: 'cluster'
+	exec_mode: 'cluster',
+	instance_var: 'WORKER_ID'
 });
 
 module.exports = {

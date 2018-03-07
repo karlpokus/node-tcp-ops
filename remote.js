@@ -1,6 +1,7 @@
 const Service = require('./lib/service');
 const http = require('http');
 const url = require('url');
+const log = require('./lib/log');
 
 const request = dest => {
 	return new Promise((resolve, reject) => {
@@ -39,4 +40,4 @@ const remote = new Service({
 
 remote.start()
 	.then(socket => {})
-	.catch(console.error.bind(console));
+	.catch(log.bind(null, 'error'));

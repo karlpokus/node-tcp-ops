@@ -1,4 +1,5 @@
 const Service = require('./lib/service');
+const log = require('./lib/log');
 
 const db = [
 	{ name: 'bob', pets: [1, 3] },
@@ -28,4 +29,4 @@ const people = new Service({
 
 people.start()
 	.then(socket => {})
-	.catch(console.error.bind(console));
+	.catch(log.bind(null, 'error'));
