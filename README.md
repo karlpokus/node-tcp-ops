@@ -12,9 +12,9 @@ A proposal for a fast, resilient and scalable service architecture. No dependenc
 - http-server and tcp-client (api)
 - tcp-server (services)
 
-The browser calls the api which calls service x which responds and the api relays data back to the client. Ports: api http/5001, people tcp/5002, pets tcp/5003.
+The browser calls the api which calls service x which responds and the api relays data back to the client. Ports: api http/5001, people tcp/5002, pets tcp/5003, remote tcp/5004.
 
-Clients connect to services on startup and try to reconnect on any socket end event. Services ignore socket end events as they can have multiple connections running. Clients exit (and restart forever) if unsuccessful at connecting to all services. Services and clients exit and restarts on exceptions.
+Clients connect to services on startup and try to reconnect on any socket end event during runtime. Services ignore socket end events as they can have multiple connections running. Clients exit if unsuccessful at connecting to all services. Services and clients exit and restarts on exceptions.
 
 # usage
 start the show
@@ -53,10 +53,11 @@ $ npm test
 
 # todos
 - [x] do tests
+- [ ] add scale up and down to tests
 - [ ] remove watcher from tests
 - [ ] validate inputs
 - [ ] compare bufferSize to payload before write
-- [ ] log worker id
+- [x] log worker id
 - [x] add remote api service
 - [ ] add timeout to remote api calls
 - [ ] add basic auth
