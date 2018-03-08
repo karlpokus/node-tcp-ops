@@ -17,7 +17,7 @@ test.onFinish(stopAll);
 
 test('no dependency on startup order', t => {
 	run('npm', ['start'])
-		.then(waitForConnections(8000))
+		.then(waitForConnections(5000))
 		.then(checkStatus)
 		.then(status => {
 			t.equal(status.length, 3, 'api connects to all services');
@@ -27,7 +27,7 @@ test('no dependency on startup order', t => {
 
 test('restart service pets', t => {
 	run('pm2', ['restart', 'pets'])
-		.then(waitForConnections(8000))
+		.then(waitForConnections(4000))
 		.then(checkStatus)
 		.then(status => {
 			t.equal(status.length, 3, 'api reconnects');
